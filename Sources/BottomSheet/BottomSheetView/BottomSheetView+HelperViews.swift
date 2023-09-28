@@ -107,14 +107,18 @@ internal extension BottomSheetView {
                     )
             })
         // Make it borderless for Mac
-            .buttonStyle(.borderless)
+        .buttonStyle(.borderless)
+        // Disable animation
+        .transaction { transform in
+            transform.disablesAnimations = true
+        }
     }
     
     func bottomSheetContent(with geometry: GeometryProxy) -> some View {
         // Add ZStack to pin header content and make main content transition correctly for iPad and Mac
         ZStack(alignment: .top) {
             // BottomSheet main content
-            if self.bottomSheetPosition.isBottom {
+            if self.bottomSheetPosition.isBottom && self.translation == 0 {
                 // In a bottom position the main content is hidden - add a Spacer to fill the height
                 Spacer(minLength: 0)
                     .frame(height: self.bottomPositionSpacerHeight)
@@ -328,14 +332,14 @@ internal extension BottomSheetView {
                 bundle: Bundle.module
             )
             // Design of the close button
-                .resizable()
-                .renderingMode(.template)
-                .foregroundColor(.tertiaryLabel)
-                .scaledToFit()
-                .frame(
-                    width: 30,
-                    height: 30
-                )
+            .resizable()
+            .renderingMode(.template)
+            .foregroundColor(.tertiaryLabel)
+            .scaledToFit()
+            .frame(
+                width: 30,
+                height: 30
+            )
         }
         // Make it borderless for Mac
         .buttonStyle(.borderless)
